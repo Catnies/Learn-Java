@@ -1,5 +1,14 @@
-package top.catnies.simplelib;
+package top.catnies.jni.simplelib;
 
+
+// JNI 调用 C++
+// 1. 编写Java代码, 在方法中加入 native 关键字声明方法是一个JNI方法.
+// 2. 使用 javac -h 生成类对应的 C++ 头文件.
+// 3. 编写 C++ 函数，实现头文件.
+// 4. 编译 C++ 为静态库, DLL 文件.
+// 5. 使用 System.load 加载 DLL 库.
+// 6. 调用 DLL 库中的函数.
+//
 public class SimpleLibSource {
 
     static {
