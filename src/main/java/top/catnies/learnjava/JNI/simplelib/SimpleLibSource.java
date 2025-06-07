@@ -1,4 +1,4 @@
-package top.catnies.jni.simplelib;
+package top.catnies.learnjava.JNI.simplelib;
 
 
 // JNI 调用 C++
