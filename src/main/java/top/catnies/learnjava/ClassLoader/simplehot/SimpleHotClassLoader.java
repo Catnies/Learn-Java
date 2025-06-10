@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 public class SimpleHotClassLoader extends ClassLoader {
 
-    private String allowPackage;
+    private final String allowPackage;
 
 
     public SimpleHotClassLoader(String allowPackage) {

@@ -1,11 +1,15 @@
 package top.catnies.learnjava.ClassLoader.simplehot;
 
 
+import lombok.Getter;
+
 import java.lang.reflect.InvocationTargetException;
 
 // 热重载简单实现
 public class SimpleHotReloader {
     public SimpleHotClassLoader currentLoader;
+    // 获取当前实例
+    @Getter
     public Object currentInstance;
     public String className;
     public String allowPackage;
@@ -35,10 +39,5 @@ public class SimpleHotReloader {
         System.out.println("class reload success!");
     }
 
-
-    // 获取当前实例
-    public Object getCurrentInstance() {
-        return currentInstance;
-    }
 
 }
