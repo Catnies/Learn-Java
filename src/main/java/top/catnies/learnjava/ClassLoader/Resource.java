@@ -1,4 +1,4 @@
-package top.catnies.learnjava.类加载器;
+package top.catnies.learnjava.ClassLoader;
 
 public class Resource {
 
@@ -24,6 +24,6 @@ public class Resource {
 
     @Override
     public String toString() {
-        return "Resource{" + "name888='" + name + '\'' + '}';
+        return "Resource{" + "namehahaa='" + name + '\'' + '}';
     }
 }

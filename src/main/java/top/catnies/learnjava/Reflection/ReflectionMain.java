@@ -1,4 +1,4 @@
-package top.catnies.learnjava.反射;
+package top.catnies.learnjava.Reflection;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -16,7 +16,7 @@ public class ReflectionMain {
     // 使用反射创建一个私有类对象
     public static void createPrivateClass() throws Exception {
         // 1. 想办法获取对象的Class.
-        Class<?> clazz = Class.forName("top.catnies.learnjava.反射.PrivateClass");
+        Class<?> clazz = Class.forName("top.catnies.learnjava.Reflection.PrivateClass");
         // 2. 获取构造函数, 并实例化对象.
         Constructor<?> constructor = clazz.getDeclaredConstructor(String.class, int.class);
         Object instance = constructor.newInstance("catnies", 666);
@@ -30,7 +30,7 @@ public class ReflectionMain {
 
         // 1. 想办法获取对象的Class.
         Class<?> clazz = catnies.getClass();    // 使用对象获取
-        Class<?> clazz_2 = Class.forName("top.catnies.learnjava.反射.PrivateClass"); // 使用全类名获取.
+        Class<?> clazz_2 = Class.forName("top.catnies.learnjava.Reflection.PrivateClass"); // 使用全类名获取.
 
         // 2. 获取Class中的字段对象.
         Field name_field = clazz.getDeclaredField("name"); // 注意, 要获取私有字段, 必须先使用getDeclaredField获取.
@@ -56,7 +56,7 @@ public class ReflectionMain {
     // 获取类的所有父类和接口
     public static void getAllSuperClassAndInterface() throws Exception {
         // 1. 想办法获取对象的Class.
-        Class<?> clazz = Class.forName("top.catnies.learnjava.反射.PrivateClass");
+        Class<?> clazz = Class.forName("top.catnies.learnjava.Reflection.PrivateClass");
         // 2. 获取Class中的父类和接口.
         Class<?>[] interfaces = clazz.getInterfaces();
         Class<?> superclass = clazz.getSuperclass();

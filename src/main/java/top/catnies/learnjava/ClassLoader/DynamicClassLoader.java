@@ -1,4 +1,4 @@
-package top.catnies.learnjava.类加载器;
+package top.catnies.learnjava.ClassLoader;
 
 // Java类加载器是JVM中负责动态加载类文件到内存中的核心组件。
 // 类加载器主要包括：
@@ -68,11 +68,11 @@ public class DynamicClassLoader {
 
         try {
             // 使用自定义加载器加载类
-            Class<?> clazz = classLoader.loadClass("top.catnies.learnjava.类加载器.Resource");
+            Class<?> clazz = classLoader.loadClass("top.catnies.learnjava.ClassLoader.Resource");
             Object catnies = clazz.getDeclaredConstructor(String.class).newInstance("catnies666");
 
             // 验证实例类型（注意：因加载器不同，instanceof会返回false）
-            if (catnies instanceof top.catnies.learnjava.类加载器.Resource) {
+            if (catnies instanceof top.catnies.learnjava.ClassLoader.Resource) {
                 System.out.println("instance is Resource"); // 实际不会执行
             } else {
                 System.out.println("instance is NOT Resource (因不同类加载器)");
@@ -80,7 +80,7 @@ public class DynamicClassLoader {
 
             // 正确验证方式：通过类对象比较
             System.out.println("类对象是否相同: " +
-                (clazz == top.catnies.learnjava.类加载器.Resource.class)); // 输出false
+                (clazz == top.catnies.learnjava.ClassLoader.Resource.class)); // 输出false
 
             // 输出实例对象看看内容
             System.out.println(catnies);
@@ -120,11 +120,11 @@ public class DynamicClassLoader {
 
         try {
             // 使用自定义加载器加载类
-            Class<?> clazz = classLoader.loadClass("top.catnies.learnjava.类加载器.Resource");
+            Class<?> clazz = classLoader.loadClass("top.catnies.learnjava.ClassLoader.Resource");
             Object catnies = clazz.getDeclaredConstructor(String.class).newInstance("catnies888");
 
             // 验证实例类型（注意：因加载器不同，instanceof会返回false）
-            if (catnies instanceof top.catnies.learnjava.类加载器.Resource) {
+            if (catnies instanceof top.catnies.learnjava.ClassLoader.Resource) {
                 System.out.println("instance is Resource");
             } else {
                 System.out.println("instance is NOT Resource ");
@@ -132,7 +132,7 @@ public class DynamicClassLoader {
 
             // 正确验证方式：通过类对象比较
             System.out.println("类对象是否相同: " +
-                (clazz == top.catnies.learnjava.类加载器.Resource.class));
+                (clazz == top.catnies.learnjava.ClassLoader.Resource.class));
 
             // 输出实例对象看看内容
             System.out.println(catnies);

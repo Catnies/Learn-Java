@@ -1,4 +1,4 @@
-package top.catnies.learnjava.反射;
+package top.catnies.learnjava.Reflection;
 
 public class PrivateClass {
     private String name;

@@ -1,4 +1,4 @@
-package top.catnies.learnjava.类加载器;
+package top.catnies.learnjava.ClassLoader.simplehot;
 
 
 import java.lang.reflect.InvocationTargetException;
@@ -8,10 +8,12 @@ public class SimpleHotReloader {
     public SimpleHotClassLoader currentLoader;
     public Object currentInstance;
     public String className;
+    public String allowPackage;
 
 
-    public SimpleHotReloader(String className) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public SimpleHotReloader(String className, String allowPackage) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
         this.className = className;
+        this.allowPackage = allowPackage;
         reload();
     }
 
@@ -23,7 +25,7 @@ public class SimpleHotReloader {
         }
 
         // 2. 创建新的类加载器
-        currentLoader = new SimpleHotClassLoader();
+        currentLoader = new SimpleHotClassLoader(allowPackage);
 
         // 3. 重新加载类
         Class<?> clazz = currentLoader.loadClass(className);
