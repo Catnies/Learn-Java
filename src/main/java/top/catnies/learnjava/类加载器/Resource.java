@@ -9,6 +9,11 @@ public class Resource {
         System.out.println("Resource init");
     }
 
+    public Resource() {
+        this.name = "default";
+        System.out.println("Resource init");
+    }
+
     public String getName() {
         return name;
     }
@@ -19,6 +24,6 @@ public class Resource {
 
     @Override
     public String toString() {
-        return "Resource{" + "name='" + name + '\'' + '}';
+        return "Resource{" + "name888='" + name + '\'' + '}';
     }
 }
