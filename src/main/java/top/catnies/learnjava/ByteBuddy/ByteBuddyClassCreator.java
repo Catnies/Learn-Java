@@ -3,6 +3,7 @@ package top.catnies.learnjava.ByteBuddy;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.*;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.implementation.bind.annotation.Argument;
@@ -23,14 +24,22 @@ public class ByteBuddyClassCreator {
     // 使用 ByteBuddy 创建一个类。
     public static void createClass() throws Exception {
         // 定义一个Class
-        ByteBuddy byteBuddy = new ByteBuddy(); // 创建一个ByteBuddy对象.
-        DynamicType.Builder<Object> classBuilder = byteBuddy.subclass(Object.class);// 指定新类继承自哪个类
-        classBuilder = classBuilder.name("top.catnies.Hanabi"); // 设置类名
-        DynamicType.Unloaded<Object> unloadedClass = classBuilder.make();  // 生成字节码
+        Class<?> aClass = new ByteBuddy() // 创建一个ByteBuddy对象.
+                .subclass(Object.class)// 指定新类继承自哪个类
+                .name("top.catnies.Hanabi") // 设置类名
+                .make() // 生成字节码
 
-        // 尝试加载一个类
-        DynamicType.Loaded<Object> loadedClass = unloadedClass.load(ClassLoader.getSystemClassLoader()); // 使用类加载器, 将将字节码加载到JVM
-        Class<?> aClass = loadedClass.getLoaded(); // 从加载完成类中获取具体的class对象.
+                // 使用类加载器, 将字节码加载到JVM.
+                // 这里的第二个参数是加载策略, 这是一个重要的参数, Byte Buddy 提供了几种类加载策略，这些策略定义在 ClassLoadingStrategy.Default 中.
+                // WRAPPER      ->  创建一个新的 ClassLoader 来加载动态生成的类型。(默认)
+                // CHILD_FIRST  ->  创建一个子类优先加载的 ClassLoader，即打破了双亲委派模型。
+                // INJECTION    ->  使用反射将动态生成的类型直接注入到当前 ClassLoader 中。
+                .load(Thread.currentThread().getContextClassLoader(), ClassLoadingStrategy.Default.WRAPPER) // 使用类加载器, 将将字节码加载到JVM
+                .getLoaded(); // 从加载完成类中获取具体的class对象.
+
+        // 你会发现并不一样, 因为load导致的策略问题
+        System.out.println(aClass.getClassLoader());
+        System.out.println(ClassLoader.getSystemClassLoader());
 
         // 创建类
         Object instance = aClass.getDeclaredConstructor().newInstance();
@@ -91,7 +100,13 @@ public class ByteBuddyClassCreator {
 
 
                 .make() // 生成字节码
-                .load(ClassLoader.getSystemClassLoader()) // 使用类加载器, 将字节码加载到JVM.
+
+                // 使用类加载器, 将字节码加载到JVM.
+                // 这里的第二个参数是加载策略, 这是一个重要的参数, Byte Buddy 提供了几种类加载策略，这些策略定义在 ClassLoadingStrategy.Default 中.
+                // WRAPPER      ->  创建一个新的 ClassLoader 来加载动态生成的类型。(默认)
+                // CHILD_FIRST  ->  创建一个子类优先加载的 ClassLoader，即打破了双亲委派模型。
+                // INJECTION    ->  使用反射将动态生成的类型直接注入到当前 ClassLoader 中。
+                .load(ClassLoader.getSystemClassLoader(), ClassLoadingStrategy.Default.INJECTION)
                 .getLoaded(); // 获取 Class 对象
 
 
@@ -122,6 +137,15 @@ public class ByteBuddyClassCreator {
             int counts = field.getInt(null);
             field.set(null, counts + 1);
         }
+
+        @RuntimeType
+        public static void increment() throws Exception {
+            System.out.println("CounterHelper.increment() is called!");
+            Class<?> aClass = Class.forName("top.catnies.Student");
+            Field field = aClass.getField("allCounts");
+            int counts = field.getInt(null);
+            field.set(null, counts + 1);
+        }
     }
     public static void createClass_DefineField() throws Exception {
         // 我们可以使用Builder去解决泛型字段的定义问题
@@ -148,7 +172,8 @@ public class ByteBuddyClassCreator {
                         .andThen(FieldAccessor.ofField("name").setsArgumentAt(0))
                         .andThen(FieldAccessor.ofField("age").setsArgumentAt(1))
                         .andThen(FieldAccessor.ofField("dataMap").setsValue(new HashMap<String, Integer>()))
-                        .andThen(MethodCall.invoke(CounterHelper.class.getMethod("increment", Class.class)).withOwnType())  // 自增处理, 这里只能将逻辑给委托给其他类的方法, 把自身类传递.
+                        // 自增处理, 这里只能将逻辑给委托给其他类的方法, 把自身类传递或者设置forName的ClassLoader和加载当前类的ClassLoader是一致的.
+                        .andThen(MethodDelegation.to(CounterHelper.class))
                     )
 
                 // 当然还需要get和set方法
@@ -164,8 +189,12 @@ public class ByteBuddyClassCreator {
                     .intercept(FieldAccessor.ofField("age").setsArgumentAt(0))
 
                 .make()
-                .load(ClassLoader.getSystemClassLoader())
+                .load(ClassLoader.getSystemClassLoader(), ClassLoadingStrategy.Default.INJECTION)
                 .getLoaded();
+
+        // 查看类加载器
+        System.out.println(aClass.getClassLoader());
+        System.out.println(ClassLoader.getSystemClassLoader());
 
         // 尝试构建对象然后获取信息
         Object instance = aClass.getDeclaredConstructor(String.class, int.class).newInstance("catnies", 18);
