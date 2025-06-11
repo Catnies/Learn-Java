@@ -1,6 +1,9 @@
 package top.catnies.learnjava.ByteBuddy;
 
+import lombok.Data;
+import lombok.NonNull;
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.annotation.AnnotationDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
@@ -11,10 +14,12 @@ import net.bytebuddy.matcher.ElementMatchers;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 
+@SuppressWarnings(value = "unchecked")
 public class ByteBuddyClassCreator {
     public static void main(String[] args) throws Exception {
         createClass_DefineField();
@@ -157,8 +162,14 @@ public class ByteBuddyClassCreator {
                 .subclass(Object.class)
                 .name("top.catnies.Student")
 
+
+                // annotateType 可以添加注解, 在这里添加的注解将会被加到类上
+                .annotateType(AnnotationDescription.Builder.ofType(SuppressWarnings.class).defineArray("value", "unchecked").build())
+
                 // defineField 可以定义新字段，你需要提供 字段名称, 类型, 访问权限。
                 .defineField("name", String.class, Modifier.PUBLIC)
+                    // 这里的注解将会被加到字段上
+                    .annotateType(AnnotationDescription.Builder.ofType(Deprecated.class).build())
                 .defineField("age", int.class, Modifier.PUBLIC).value(18) // 使用 value 可以设置字段的默认值.
                 .defineField("allCounts", int.class, Modifier.PUBLIC | Modifier.STATIC).value(0) // 设置静态变量.
                 .defineField("dataMap", mapOfStringToInt, Modifier.PUBLIC) // 创建一个泛型的Map<String, int>
@@ -184,13 +195,19 @@ public class ByteBuddyClassCreator {
                 .defineMethod("setName", void.class, Modifier.PUBLIC)
                     .withParameter(String.class, "name")
                     .intercept(FieldAccessor.ofField("name").setsArgumentAt(0))
+                    // 这里会给方法加注解
+                    .annotateMethod(AnnotationDescription.Builder.ofType(Deprecated.class).build())
                 .defineMethod("setAge", void.class, Modifier.PUBLIC)
                     .withParameter(int.class, "age")
+                    // 这里会给参数加注解
+                    .annotateParameter(AnnotationDescription.Builder.ofType(Deprecated.class).build())
                     .intercept(FieldAccessor.ofField("age").setsArgumentAt(0))
+
 
                 .make()
                 .load(ClassLoader.getSystemClassLoader(), ClassLoadingStrategy.Default.INJECTION)
                 .getLoaded();
+
 
         // 查看类加载器
         System.out.println(aClass.getClassLoader());
