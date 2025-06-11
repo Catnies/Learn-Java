@@ -16,4 +16,6 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.34") // Lombok
     annotationProcessor("org.projectlombok:lombok:1.18.34") // Lombok
     implementation("io.netty:netty-all:4.1.119.Final")  // Netty
+    implementation("net.bytebuddy:byte-buddy:1.17.5")
+    implementation("net.bytebuddy:byte-buddy-agent:1.17.5")
 }
