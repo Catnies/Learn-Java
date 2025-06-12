@@ -5,6 +5,8 @@ package top.catnies.learnjava.ClassLoader;
 // Bootstrap ClassLoader（引导类加载器） -> 用原生代码实现，在Java中表现为null，负责加载核心Java API类（如java.lang.*）。
 // Extension ClassLoader（扩展类加载器） -> 加载标准扩展API和平台特定的类， 位于$JAVA_HOME/lib/ext目录。
 // Application ClassLoader（应用类加载器） -> 加载应用程序类路径上的类，默认的类加载器，处理CLASSPATH环境变量中的类，作为自定义类加载器的默认父加载器。
+// SystemClassLoader -> 系统默认类加载器, 其默认值是 Application ClassLoader, 可以在启动添加 -Djava.system.class.loader 参数设置, 设置之后其实也会把 Application 作为父加载器.
+// Thread.currentThread().getContextClassLoader -> 线程上下文加载器, 其默认值是 Application ClassLoader, 可以在启动添加 -Djava.system.class.loader 参数设置, 一般和系统类加载器是同一个.
 // 它们从上到下，是组合而非继承关系.
 
 // 类的生命周期：
@@ -17,7 +19,7 @@ package top.catnies.learnjava.ClassLoader;
 // 双亲委派模型是为了确保类的一致性设计的, 因为使用双亲委派模型, 一个限定名的类永远只会有一个类加载器负责加载它.
 // 双亲委派模型：
 // 1. 当一个类需要被加载时, 类加载器首先会将类交给其父类加载器进行加载, 直到父类加载器为null(即顶层的Bootstrap ClassLoader).
-// 2. 当类传递到顶层的Bootstrap ClassLoader时, 类才真正开始加载, Bootstrap ClassLoader会首先自己尝试加载, 若加载失败则向下传递给其子加载器进行加载, 直到加载成功.
+// 2. 当类传递到顶层的Bootstrap ClassLoader时, 类才真正开始加载, Bootstrap ClassLoader会首先自己尝试加载, 若加载失败则向下传递给其子加载器进行加载,直到加载成功.
 // 3. 如果所有的类加载器都无法加载成功, 则抛出ClassNotFoundException异常.
 
 import java.io.InputStream;
