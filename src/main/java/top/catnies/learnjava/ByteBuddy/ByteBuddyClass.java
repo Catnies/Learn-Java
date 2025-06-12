@@ -1,7 +1,13 @@
 package top.catnies.learnjava.ByteBuddy;
 
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.ClassFileVersion;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
+import net.bytebuddy.implementation.FixedValue;
+import net.bytebuddy.implementation.StubMethod;
+import net.bytebuddy.matcher.ElementMatchers;
+
+import java.lang.reflect.Modifier;
 
 
 // 使用 ByteBuddy 创建一个简单的类。
@@ -9,6 +15,8 @@ public class ByteBuddyClass {
 
     public static void main(String[] args) throws Exception {
         createClass();
+        System.out.println("---------------------------------");
+        createInterface();
     }
 
     // 使用 ByteBuddy 创建一个类。
@@ -34,5 +42,30 @@ public class ByteBuddyClass {
         // 创建类
         Object instance = aClass.getDeclaredConstructor().newInstance();
         System.out.println("instance: " + instance);
+    }
+
+
+    // 创建一个接口类, 然后再创建一个实现了这个接口的类.
+    public static void createInterface() throws Exception {
+        Class<?> aClass = new ByteBuddy()
+                .with(ClassFileVersion.JAVA_V21) // 设置生成出来的字节码的java版本.
+                .makeInterface()
+                .name("top.catnies.HanabiInterface") // 设置类名
+                .defineMethod("say", void.class, Modifier.PUBLIC).intercept(StubMethod.INSTANCE) // 这是个空实现, 因为接口需要空实现
+                .make()
+                .load(Thread.currentThread().getContextClassLoader(), ClassLoadingStrategy.Default.INJECTION) // 这里使用的是 INJECTION 策略, 否则默认情况下会因为类加载器的可见性问题导致其他类无法找到它.
+                .getLoaded();
+        System.out.println(aClass.getName());
+
+        Class<?> aClass1 = new ByteBuddy()
+                .subclass(Object.class)
+                .implement(aClass)
+                .name("top.catnies.HanabiImpl")
+                .method(ElementMatchers.named("say")).intercept(FixedValue.originType())
+                .make()
+                // 子加载器可以看到父加载器的所有类, 但是父看不到子加载的类, 这里的Wapper策略实际上是在 App 下的 子 加载器, 同时接口类使用的是 Injection 策略, 也就是 App 加载器, 所以不同类加载器也可查找到.
+                .load(Thread.currentThread().getContextClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
+                .getLoaded();
+        System.out.println(aClass1.getName());
     }
 }
