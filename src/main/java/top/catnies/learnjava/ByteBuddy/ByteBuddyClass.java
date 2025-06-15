@@ -2,11 +2,13 @@ package top.catnies.learnjava.ByteBuddy;
 
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.ClassFileVersion;
+import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.implementation.StubMethod;
 import net.bytebuddy.matcher.ElementMatchers;
 
+import java.io.File;
 import java.lang.reflect.Modifier;
 
 
@@ -33,7 +35,7 @@ public class ByteBuddyClass {
                 // CHILD_FIRST  ->  创建一个子类优先加载的 ClassLoader，即打破了双亲委派模型。
                 // INJECTION    ->  使用反射将动态生成的类型直接注入到当前 ClassLoader 中。
                 .load(Thread.currentThread().getContextClassLoader(), ClassLoadingStrategy.Default.WRAPPER) // 使用类加载器, 将将字节码加载到JVM
-                .getLoaded(); // 从加载完成类中获取具体的class对象.
+                .getLoaded();// 从加载完成类中获取具体的class对象.
 
         // 你会发现并不一样, 因为load导致的策略问题
         System.out.println(aClass.getClassLoader());
@@ -57,15 +59,25 @@ public class ByteBuddyClass {
                 .getLoaded();
         System.out.println(aClass.getName());
 
-        Class<?> aClass1 = new ByteBuddy()
+        DynamicType.Unloaded<Object> make = new ByteBuddy()
                 .subclass(Object.class)
                 .implement(aClass)
                 .name("top.catnies.HanabiImpl")
                 .method(ElementMatchers.named("say")).intercept(FixedValue.originType())
-                .make()
-                // 子加载器可以看到父加载器的所有类, 但是父看不到子加载的类, 这里的Wapper策略实际上是在 App 下的 子 加载器, 同时接口类使用的是 Injection 策略, 也就是 App 加载器, 所以不同类加载器也可查找到.
-                .load(Thread.currentThread().getContextClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
+                .make();
+
+        // 子加载器可以看到父加载器的所有类, 但是父看不到子加载的类, 这里的Wapper策略实际上是在 App 下的 子 加载器, 同时接口类使用的是 Injection 策略, 也就是 App 加载器, 所以不同类加载器也可查找到.
+        Class<?> aClass1 = make.load(Thread.currentThread().getContextClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
                 .getLoaded();
         System.out.println(aClass1.getName());
+
+        // 我们还可以将动态生成的Class保存到文件!
+        File file = new File("F:\\IDEA Projects\\StudyProjects\\Learn-Java\\src\\main\\resources\\ByteBuddy");
+        if (file.exists()) {
+            System.out.println("文件存在");
+            make.saveIn(file);
+        } else {
+            System.out.println("文件不存在");
+        }
     }
 }
