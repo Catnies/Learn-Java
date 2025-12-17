@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains:annotations:15.0")
     // 开发工具
     compileOnly("org.projectlombok:lombok:1.18.34") // Lombok
     annotationProcessor("org.projectlombok:lombok:1.18.34") // Lombok

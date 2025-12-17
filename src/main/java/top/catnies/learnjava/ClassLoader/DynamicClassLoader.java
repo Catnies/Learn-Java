@@ -29,6 +29,7 @@ import java.net.URL;
 public class DynamicClassLoader {
     public static void main(String[] args) {
         overrideLoadClass();
+        getRsPath();
     }
 
     public static void getRsPath() {
