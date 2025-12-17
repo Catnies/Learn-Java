@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 // 使用数组手动实现一个 ArrayList
-public class MyArrayList<E> {
+public class MyArrayList<E> implements Iterable<E> {
 
     // 测试方法
     public static void main(String[] args) {
@@ -183,5 +183,23 @@ public class MyArrayList<E> {
             newArray[i] = data[i];
         }
         this.data = newArray;
+    }
+
+    @Override
+    public @NotNull Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private int cursor = 0;
+
+            @Override
+            public boolean hasNext() {
+                return cursor < size;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) {throw new NoSuchElementException();}
+                return data[cursor++];
+            }
+        };
     }
 }
