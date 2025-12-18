@@ -187,7 +187,7 @@ public class MyArrayList<E> implements Iterable<E> {
 
     @Override
     public @NotNull Iterator<E> iterator() {
-        return new Iterator<E>() {
+        return new Iterator<>() {
             private int cursor = 0;
 
             @Override
