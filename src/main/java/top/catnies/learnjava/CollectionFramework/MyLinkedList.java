@@ -1,4 +1,4 @@
-package top.catnies.learnjava.CollectionFramework.LinkedList;
+package top.catnies.learnjava.CollectionFramework;
 
 import org.jetbrains.annotations.NotNull;
 

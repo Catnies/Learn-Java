@@ -1,4 +1,4 @@
-package top.catnies.learnjava.CollectionFramework.ArrayList;
+package top.catnies.learnjava.CollectionFramework;
 
 import org.jetbrains.annotations.NotNull;
 
