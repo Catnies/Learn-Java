@@ -5,10 +5,18 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ByteBuddy" />
+            <option value="$PROJECT_DIR$/ClassLoader" />
+            <option value="$PROJECT_DIR$/DataStructure" />
+            <option value="$PROJECT_DIR$/DesignPattern" />
+            <option value="$PROJECT_DIR$/JNI" />
+            <option value="$PROJECT_DIR$/JavaAgent" />
+            <option value="$PROJECT_DIR$/Netty" />
+            <option value="$PROJECT_DIR$/NginxConf" />
+            <option value="$PROJECT_DIR$/Reflection" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -4,8 +4,11 @@ plugins {
 
 group = "top.catnies"
 version = "1.0-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_21
-java.targetCompatibility = JavaVersion.VERSION_21
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
 
 repositories {
     mavenCentral()
@@ -14,18 +17,43 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains:annotations:15.0")
-    // 开发工具
-    compileOnly("org.projectlombok:lombok:1.18.34") // Lombok
-    annotationProcessor("org.projectlombok:lombok:1.18.34") // Lombok
-    implementation("io.netty:netty-all:4.1.119.Final")  // Netty
+    compileOnly("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok:1.18.34")
+    implementation("io.netty:netty-all:4.1.119.Final")
     implementation("net.bytebuddy:byte-buddy:1.17.5")
     implementation("net.bytebuddy:byte-buddy-agent:1.17.5")
     implementation("org.openjdk.jmh:jmh-core:1.37")
     annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.37")
-
-    // Required ASM dependency (keep updated to latest version)
     implementation("org.ow2.asm:asm:9.9.1")
-    // Check build.gradle.kts for the latest version
     implementation("net.momirealms:sparrow-reflection:0.25")
+}
 
+subprojects {
+    apply(plugin = "java")
+
+    group = rootProject.group
+    version = rootProject.version
+
+    repositories {
+        mavenCentral()
+        maven("https://repo.momirealms.net/releases/")
+    }
+
+    extensions.configure<JavaPluginExtension> {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    dependencies {
+        add("implementation", "org.jetbrains:annotations:15.0")
+        add("compileOnly", "org.projectlombok:lombok:1.18.34")
+        add("annotationProcessor", "org.projectlombok:lombok:1.18.34")
+        add("implementation", "io.netty:netty-all:4.1.119.Final")
+        add("implementation", "net.bytebuddy:byte-buddy:1.17.5")
+        add("implementation", "net.bytebuddy:byte-buddy-agent:1.17.5")
+        add("implementation", "org.openjdk.jmh:jmh-core:1.37")
+        add("annotationProcessor", "org.openjdk.jmh:jmh-generator-annprocess:1.37")
+        add("implementation", "org.ow2.asm:asm:9.9.1")
+        add("implementation", "net.momirealms:sparrow-reflection:0.25")
+    }
 }

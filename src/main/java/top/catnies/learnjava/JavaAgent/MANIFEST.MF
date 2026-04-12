@@ -1,4 +1,0 @@
-Premain-Class: top.catnies.learnjava.JavaAgent.SimpleAgent
-Agent-Class: top.catnies.learnjava.JavaAgent.SimpleAgent
-Can-Redefine-Classes: true
-Can-Retransform-Classes: true
