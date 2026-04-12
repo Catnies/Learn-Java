@@ -1,0 +1,4 @@
+Premain-Class: top.catnies.learn.agent.SimpleAgent
+Agent-Class: top.catnies.learn.agent.SimpleAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true

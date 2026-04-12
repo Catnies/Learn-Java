@@ -40,3 +40,5 @@ bin/
 .DS_Store
 /.xcodemap/
 /.idea/
+
+*.mp4
