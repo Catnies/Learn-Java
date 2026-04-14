@@ -1,8 +1,5 @@
 package top.catnies.learn.designpattern.中介模式;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.*;
 
 /**
@@ -30,7 +27,6 @@ public class MediatorMain {
  * 需要传输消息的对象.
  */
 abstract class Sender{
-    @Getter @Setter
     protected String name;
     public Sender(String name) {
         this.name = name;
@@ -38,6 +34,13 @@ abstract class Sender{
     abstract void sendMessage(String message);
     abstract void receiveMessage(Sender sender, String message);
 
+    public String name() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
 class ConcreteSender extends Sender{
     public ConcreteSender(String name) {

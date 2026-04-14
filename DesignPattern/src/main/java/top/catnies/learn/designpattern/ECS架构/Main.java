@@ -213,7 +213,7 @@ public class Main {
                 return;
             }
             health.hp = Math.max(0, health.hp - damage);
-            String displayName = name == null ? ("实体#" + entity.getId()) : name.name;
+            String displayName = name == null ? ("实体#" + entity.id) : name.name;
             System.out.println(displayName + " 受到 " + damage + " 点伤害，剩余血量: " + health.hp);
         }
     }
@@ -230,7 +230,7 @@ public class Main {
                 PositionComponent position = world.getComponent(entity, PositionComponent.class);
                 HealthComponent health = world.getComponent(entity, HealthComponent.class);
 
-                String displayName = name == null ? ("实体#" + entity.getId()) : name.name;
+                String displayName = name == null ? ("实体#" + entity.id) : name.name;
                 String positionText = position == null ? "无位置" : "(" + position.x + ", " + position.y + ")";
                 String hpText = health == null ? "无血量" : String.valueOf(health.hp);
 

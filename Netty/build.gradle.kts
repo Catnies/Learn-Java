@@ -20,4 +20,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains:annotations:15.0")
+    implementation("io.netty:netty-all:4.2.5.Final")
+    implementation("net.bytebuddy:byte-buddy:1.17.5")
+    implementation("net.bytebuddy:byte-buddy-agent:1.17.5")
 }

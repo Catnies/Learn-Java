@@ -11,7 +11,7 @@ public class Main {
     public static void testSimpleHotReloader() throws Exception {
         // 1. 初始化加载类.
         SimpleHotReloader hotReloader = new SimpleHotReloader("top.catnies.learnjava.ClassLoader.Resource", "top.catnies");
-        Object currentInstance = hotReloader.getCurrentInstance();
+        Object currentInstance = hotReloader.currentInstance();
         System.out.println(currentInstance);
 
         // 2. 等待手动替换完class
@@ -20,7 +20,7 @@ public class Main {
 
         // 3. 重新加载类.
         hotReloader.reload();
-        System.out.println(hotReloader.getCurrentInstance());
+        System.out.println(hotReloader.currentInstance());
     }
 
 }

@@ -1,8 +1,6 @@
 package top.catnies.learn.designpattern.ECS架构;
 
 
-import lombok.Getter;
-
 /**
  * ECS 中的 Entity（实体）。
  * <p>
@@ -20,8 +18,7 @@ public class ECSEntity {
      */
     private static int nextId = 0;
 
-    @Getter
-    private final int id;
+    public final int id;
 
     /**
      * 创建实体时自动分配一个唯一 ID。

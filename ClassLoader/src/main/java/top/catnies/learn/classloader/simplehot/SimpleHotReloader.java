@@ -1,19 +1,15 @@
 package top.catnies.learn.classloader.simplehot;
 
 
-import lombok.Getter;
-
 import java.lang.reflect.InvocationTargetException;
 
 // 热重载简单实现
 public class SimpleHotReloader {
     public SimpleHotClassLoader currentLoader;
     // 获取当前实例
-    @Getter
     public Object currentInstance;
     public String className;
     public String allowPackage;
-
 
     public SimpleHotReloader(String className, String allowPackage) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
         this.className = className;
@@ -39,5 +35,11 @@ public class SimpleHotReloader {
         System.out.println("class reload success!");
     }
 
+    public Object currentInstance() {
+        return currentInstance;
+    }
 
+    public void setCurrentInstance(Object currentInstance) {
+        this.currentInstance = currentInstance;
+    }
 }
